@@ -4,6 +4,15 @@
 
 GlotIO - use glot.io API via Perl 6
 
+# SYNOPSIS
+
+```perl6
+use GlotIO;
+my GlotIO $glot .= new: :key<89xxxx9f-a3ec-4445-9f14-6xxxe6ff3846>;
+
+say $glot.languages;
+```
+
 # DESCRIPTION
 
 This module lets you use API provided [glot.io](http://glot.io) which is
@@ -13,6 +22,26 @@ a pastebin that also lets you execute code in a number of languages.
 
 Some parts of the API require you register at glot.io and [obtain an
 API key](https://glot.io/api)
+
+# METHODS
+
+## `.new`
+
+```perl6
+my GlotIO $glot .= new: :key<89xxxx9f-a3ec-4445-9f14-6xxxe6ff3846>;
+```
+
+Constructs and returns a new `GlotIO` object. Takes one **optional**
+argument: `key`, which is [the API key](https://glot.io/api).
+Methods that require the key are marked as such.
+
+## `.languages`
+
+```perl6
+say "Glot.io supports $_" for $glot.languages;
+```
+
+Returns a list of languages supported by GlotIO.
 
 ----
 
