@@ -27,3 +27,8 @@ method !request ($method, $url, *%params) {
 method languages {
     self!request('GET', $!api-url ~ '/languages').map: *<name>;
 }
+
+method versions (Str $lang) {
+    my $uri = $!api-url ~ '/languages/' ~ uri-escape($lang);
+    self!request('GET', $uri).map: *<version>;
+}

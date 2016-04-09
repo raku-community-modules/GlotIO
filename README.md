@@ -43,6 +43,18 @@ say "Glot.io supports $_" for $glot.languages;
 
 Returns a list of languages supported by GlotIO.
 
+## `.versions`
+
+```perl6
+say "Glot.io supports $_ version of Perl 6"
+    for $glot.versions: 'perl6';
+```
+
+Returns a list of supported versions for a language that
+must be supplied as the mandatory positional argument. List of valid
+language names can be obtained via `.languages` method. Using an
+invalid language will `fail` an an HTTP 404 error.
+
 ----
 
 # REPOSITORY
