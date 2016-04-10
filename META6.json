@@ -1,8 +1,8 @@
 {
     "perl"         : "6.c",
-    "name"         : "NASA",
+    "name"         : "GlotIO",
     "version"      : "1.001001",
-    "description"  : "use NASA's APIs via Perl 6",
+    "description"  : "use glot.io API: pastebin allowing execution of code",
     "depends"      : [
         "HTTP::Tinyish",
         "JSON::Fast",
@@ -10,10 +10,8 @@
     ],
     "test-depends" : [ "Test" ],
     "provides"     : {
-        "NASA" : "lib/NASA.pm6",
-        "NASA::UA" : "lib/NASA/UA.pm6",
-        "NASA::APOD" : "lib/NASA/APOD.pm6"
+        "GlotIO" : "lib/GlotIO.pm6"
     },
     "authors"      : [ "Zoffix Znet" ],
-    "source-url"   : "git://github.com/zoffixznet/perl6-NASA.git"
+    "source-url"   : "git://github.com/zoffixznet/perl6-GlotIO.git"
 }
