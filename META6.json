@@ -2,7 +2,7 @@
     "perl"         : "6.c",
     "name"         : "GlotIO",
     "version"      : "1.001001",
-    "description"  : "use glot.io API: pastebin allowing execution of code",
+    "description"  : "Use glot.io API: pastebin allowing execution of code",
     "depends"      : [
         "HTTP::Tinyish",
         "JSON::Fast",

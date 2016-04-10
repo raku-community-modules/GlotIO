@@ -107,6 +107,44 @@ A shortcut for calling `.run` (takes same arguments) and returning
 just the `stderr` key. Will `fail` with the entire `Hash` returned
 from `.run` if the program errors out.
 
+## `.list`
+
+```perl6
+say $glot.list[0..3];
+
+say $glot.list(:3page, :50per-page, :mine)[0];
+```
+
+Fetches a list of metadata for snippets. Takes optional
+named arguments:
+
+* `page` positive integer starting at and defaulting to 1. Specifies the page to display
+* `per-page` positive integer stating the number of items to return perl
+page. Defaults to `100`. Maximum value is `100`.
+* `mine` boolean specifying whether public or your own snippets should be
+listed. Defaults to `False`. Requires `key` argument to `.new` to be provided
+if set to `True.
+
+Returns a list of `Hash`s as the one shown here:
+
+```perl6
+    [
+        {
+            created    => "2016-04-09T17:52:19Z",
+            files_hash => "2afa1f37cc0bc7d033e4b3a049659792f5caac6d",
+            id         => "edltstt3n0",
+            language   => "cpp",
+            modified   => "2016-04-09T17:52:19Z",
+            owner      => "anonymous",
+            public     => Bool::True,
+            title      => "Untitled",
+            url        => "https://snippets.glot.io/snippets/edltstt3n0",
+        },
+        ...
+    ]
+```
+
+
 ----
 
 # REPOSITORY

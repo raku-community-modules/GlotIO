@@ -5,15 +5,19 @@ use JSON::Fast;
 use URI::Escape;
 
 has Str $.key;
-has $!api-url = 'https://run.glot.io';
+has $!run-api-url  = 'https://run.glot.io';
+has $!snip-api-url = 'https://snippets.glot.io';
 has $!ua      = HTTP::Tinyish.new(agent => "Perl 6 NASA.pm6");
 
-method !request ($method, $url, $content?, *%params) {
+method !request ($method, $url, $content?, *%params, Bool :$add-token) {
     #%params  = %params.kv.map: { uri-escape $_ };
 
     my %res;
     if ( $method eq 'GET' ) {
-        %res = $!ua.get: $url;
+        %res = $!ua.get: $url,
+            headers => %(
+                ('Authorization' => "Token $!key" if $add-token)
+            );
     }
     elsif ( $method eq 'POST' ) {
         %res = $!ua.post: $url,
@@ -28,15 +32,28 @@ method !request ($method, $url, $content?, *%params) {
     }
 
     %res<success> or fail "ERROR %res<status>: %res<reason>";
-    return from-json %res<content>;
+
+    return from-json %res<content>
+        unless %res<headers><link>;
+
+    say %res<headers><link>;
+    say '---';
+    my %links;
+    for %res<headers><link> ~~ m:g/ '<'(.+?)'>;'\s+'rel="'(.+?)\" / -> $m {
+        %links{ ~$m[1] } = ~$m[0];
+    };
+    return %(
+        |%links,
+        content => from-json %res<content>
+    );
 }
 
 method languages {
-    self!request('GET', $!api-url ~ '/languages').map: *<name>;
+    self!request('GET', $!run-api-url ~ '/languages').map: *<name>;
 }
 
 method versions (Str $lang) {
-    my $uri = $!api-url ~ '/languages/' ~ uri-escape($lang);
+    my $uri = $!run-api-url ~ '/languages/' ~ uri-escape($lang);
     self!request('GET', $uri).map: *<version>;
 }
 
@@ -45,7 +62,7 @@ multi method run (Str $lang, @files, :$ver = 'latest') {
     %content<files> = @files.map: {
         %(name => .key, content => .value )
     };
-    my $uri = $!api-url ~ '/languages/' ~ uri-escape($lang)
+    my $uri = $!run-api-url ~ '/languages/' ~ uri-escape($lang)
         ~ '/' ~ uri-escape($ver);
     self!request: 'POST', $uri, to-json %content;
 }
@@ -59,8 +76,24 @@ method stdout (|c) {
     fail "Error: $res" if $res<error>;
     $res<stdout>;
 }
+
 method stderr (|c) {
     my $res = self.run(|c);
     fail "Error: $res" if $res<error>;
     $res<stderr>;
 }
+
+method list (
+    Int   $page = 1,
+    Int  :$per-page = 100,
+    Str  :$owner,
+    Str  :$language,
+    Bool :$mine = False,
+) {
+    self!request: 'GET', $!snip-api-url ~ '/snippets'
+        ~ "?page=$page&per_page=$per-page"
+        ~ ( $owner.defined    ?? "&owner="    ~ uri-escape($owner)    !! '' )
+        ~ ( $language.defined ?? "&language=" ~ uri-escape($language) !! '' ),
+        add-token => $mine;
+}
+
