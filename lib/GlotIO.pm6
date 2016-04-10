@@ -9,9 +9,7 @@ has $!run-api-url  = 'https://run.glot.io';
 has $!snip-api-url = 'https://snippets.glot.io';
 has $!ua      = HTTP::Tinyish.new(agent => "Perl 6 NASA.pm6");
 
-method !request ($method, $url, $content?, *%params, Bool :$add-token) {
-    #%params  = %params.kv.map: { uri-escape $_ };
-
+method !request ($method, $url, $content?, Bool :$add-token) {
     my %res;
     if ( $method eq 'GET' ) {
         %res = $!ua.get: $url,
@@ -36,11 +34,9 @@ method !request ($method, $url, $content?, *%params, Bool :$add-token) {
     return from-json %res<content>
         unless %res<headers><link>;
 
-    say %res<headers><link>;
-    say '---';
     my %links;
-    for %res<headers><link> ~~ m:g/ '<'(.+?)'>;'\s+'rel="'(.+?)\" / -> $m {
-        %links{ ~$m[1] } = ~$m[0];
+    for %res<headers><link> ~~ m:g/ '<'.+? 'page='(\d+).+?'>;'\s+'rel="'(.+?)\" / -> $m {
+        %links{ ~$m[1] } = $m[0].Int;
     };
     return %(
         |%links,
@@ -84,7 +80,7 @@ method stderr (|c) {
 }
 
 method list (
-    Int   $page = 1,
+    Int  :$page = 1,
     Int  :$per-page = 100,
     Str  :$owner,
     Str  :$language,
@@ -96,4 +92,3 @@ method list (
         ~ ( $language.defined ?? "&language=" ~ uri-escape($language) !! '' ),
         add-token => $mine;
 }
-

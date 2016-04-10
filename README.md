@@ -119,31 +119,43 @@ Fetches a list of metadata for snippets. Takes optional
 named arguments:
 
 * `page` positive integer starting at and defaulting to 1. Specifies the page to display
-* `per-page` positive integer stating the number of items to return perl
+* `per-page` positive integer stating the maximum number of items to return per
 page. Defaults to `100`. Maximum value is `100`.
 * `mine` boolean specifying whether public or your own snippets should be
 listed. Defaults to `False`. Requires `key` argument to `.new` to be provided
-if set to `True.
+if set to `True`.
 
-Returns a list of `Hash`s as the one shown here:
+Returns a `Hash` in the following format:
 
 ```perl6
-    [
-        {
-            created    => "2016-04-09T17:52:19Z",
-            files_hash => "2afa1f37cc0bc7d033e4b3a049659792f5caac6d",
-            id         => "edltstt3n0",
-            language   => "cpp",
-            modified   => "2016-04-09T17:52:19Z",
-            owner      => "anonymous",
-            public     => Bool::True,
-            title      => "Untitled",
-            url        => "https://snippets.glot.io/snippets/edltstt3n0",
-        },
-        ...
-    ]
+    {
+        first   => 1,
+        last    => 20,
+        next    => 5,
+        prev    => 3,
+        content => [
+            {
+                created    => "2016-04-09T17:52:19Z",
+                files_hash => "2afa1f37cc0bc7d033e4b3a049659792f5caac6d",
+                id         => "edltstt3n0",
+                language   => "cpp",
+                modified   => "2016-04-09T17:52:19Z",
+                owner      => "anonymous",
+                public     => Bool::True,
+                title      => "Untitled",
+                url        => "https://snippets.glot.io/snippets/edltstt3n0",
+            },
+            ...
+        ]
+    }
 ```
 
+The `first`, `last`, `next`, `prev` keys indicate the corresponding page number.
+All 4 will NOT be present at all times. The `content` key is a list of hashes,
+each representing metadata for a snipet.
+
+Attempting to fetch a page that doesn't exist will `fail` with an HTTP 404
+error.
 
 ----
 
