@@ -118,3 +118,7 @@ multi method create (
     self!request: 'POST', $!snip-api-url ~ '/snippets', to-json(%content),
         add-token => $mine;
 }
+
+method get ( Str:D $id ) {
+    self!request: 'GET', $!snip-api-url ~ '/snippets/' ~ uri-escape($id);
+}

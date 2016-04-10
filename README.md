@@ -198,6 +198,39 @@ Returns a hash with metadata for the newly created snippet:
     }
 ```
 
+## `.get`
+
+```perl6
+    say $glot.get: 'edmxttmtd5';
+```
+
+Fetches a snippet. Takes one mandatory argument: the ID of the snippet
+to fetch. Returns a hash with the snippet details:
+
+```perl6
+    {
+      created    => "2016-04-10T18:04:30Z".Str,
+      files      => [
+        {
+          content => "use lib \".\"; use Foo; say \"Hello, World!\"".Str,
+          name    => "main.p6".Str,
+        },
+        {
+          content => "unit module Foo;".Str,
+          name    => "Foo.pm6".Str,
+        },
+      ],
+      files_hash => "8042cf6813f1772e63c8afd0a556004ad9591ce2".Str,
+      id         => "edmxttmtd5".Str,
+      language   => "perl6".Str,
+      modified   => "2016-04-10T18:04:30Z".Str,
+      owner      => "c490baa3-1ecb-42f5-8742-216abbb97f8d".Str,
+      public     => Bool::True.Bool,
+      title      => "Module import example".Str,
+      url        => "https://snippets.glot.io/snippets/edmxttmtd5".Str,
+    }
+```
+
 ----
 
 # REPOSITORY
