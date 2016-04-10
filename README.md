@@ -169,6 +169,7 @@ error.
         :mine;
 ```
 
+Creates a new snippet.
 Takes: a valid language (see `.languages` method), either a `Str` of code
 or an array of `filename => code` pairs, and an optional title of the snippet
 as positional arguments. An optional `Bool` `mine` named argument, which
