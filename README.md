@@ -110,9 +110,9 @@ from `.run` if the program errors out.
 ## `.list`
 
 ```perl6
-say $glot.list[0..3];
+say $glot.list<content>[0..3];
 
-say $glot.list(:3page, :50per-page, :mine)[0];
+say $glot.list: :3page, :50per-page, :mine;
 ```
 
 Fetches a list of metadata for snippets. Takes optional
@@ -156,6 +156,47 @@ each representing metadata for a snipet.
 
 Attempting to fetch a page that doesn't exist will `fail` with an HTTP 404
 error.
+
+## `.create`
+
+```perl6
+    say $glot.create: 'perl6', 'say "Hello, World!"';
+
+    say $glot.create: 'perl6', [
+            'main.p6' => 'use lib "."; use Foo; say "Hello, World!"',
+            'Foo.pm6' => 'unit module Foo;',
+        ], 'Module import example',
+        :mine;
+```
+
+Takes: a valid language (see `.languages` method), either a `Str` of code
+or an array of `filename => code` pairs, and an optional title of the snippet
+as positional arguments. An optional `Bool` `mine` named argument, which
+defaults to `False` can be set to `True` to specify your snippet should not
+be public. API Key (see `.key` in `.new`) must be specified for this option
+to succeed.
+
+Returns a hash with metadata for the newly created snippet:
+
+```perl6
+    {
+      created    => "2016-04-10T17:42:20Z".Str,
+      files      => [
+        {
+          content => "say \"Hello, World!\"".Str,
+          name    => "main".Str,
+        },
+      ],
+      files_hash => "6ed47f09569b36dc8d83b6af82026e5f86e3967e".Str,
+      id         => "edmx7tewwu".Str,
+      language   => "perl6".Str,
+      modified   => "2016-04-10T17:42:20Z".Str,
+      owner      => "c490baa3-1ecb-42f5-8742-216abbb97f8d".Str,
+      public     => Bool::False.Bool,
+      title      => "Untitled".Str,
+      url        => "https://snippets.glot.io/snippets/edmx7tewwu".Str,
+    }
+```
 
 ----
 

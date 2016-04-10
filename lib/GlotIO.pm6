@@ -10,6 +10,9 @@ has $!snip-api-url = 'https://snippets.glot.io';
 has $!ua      = HTTP::Tinyish.new(agent => "Perl 6 NASA.pm6");
 
 method !request ($method, $url, $content?, Bool :$add-token) {
+    fail 'This operation requires API key specified in `key` argument to .new'
+        if $add-token and not $.key;
+
     my %res;
     if ( $method eq 'GET' ) {
         %res = $!ua.get: $url,
@@ -90,5 +93,28 @@ method list (
         ~ "?page=$page&per_page=$per-page"
         ~ ( $owner.defined    ?? "&owner="    ~ uri-escape($owner)    !! '' )
         ~ ( $language.defined ?? "&language=" ~ uri-escape($language) !! '' ),
+        add-token => $mine;
+}
+
+multi method create (
+    Str   $lang,
+    Str   $code,
+    Str   $title = 'Untitled',
+    Bool :$mine  = False
+) {
+    self.create: $lang, [ main => $code, ], $title;
+}
+
+multi method create (
+    Str   $language,
+          @files,
+    Str   $title = 'Untitled',
+    Bool :$mine  = False
+) {
+    my %content = :$language, :$title, public => $mine;
+    %content<files> = @files.map: {
+        %(name => .key, content => .value )
+    };
+    self!request: 'POST', $!snip-api-url ~ '/snippets', to-json(%content),
         add-token => $mine;
 }
