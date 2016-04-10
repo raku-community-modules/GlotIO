@@ -55,6 +55,58 @@ must be supplied as the mandatory positional argument. List of valid
 language names can be obtained via `.languages` method. Using an
 invalid language will `fail` an an HTTP 404 error.
 
+## `.run`
+
+```perl6
+    say $glot.run: 'perl6', 'say "Hello, World!"';
+
+    say $glot.run: 'perl6', [
+        'main.p6' => 'use lib "."; use Foo; doit;',
+        'Foo.pm6' => 'unit module Foo; sub doit is export { say "42" }',
+    ];
+
+    say $glot.run: 'python', 'print "Hello, World!"', :ver<2>;
+```
+
+Requests code to run on Glot. The first positional argument specifies
+the language to use (see `.languages` method). Second argument
+can either be an `Str` of code to run or an `Array` of `Pair`s. If the
+array is specified, the key of each `Pair` specifies the filename and
+the value specifies the code for that file. The first file in the
+array will be executed by Glot, while the rest are supporting files,
+such as modules loaded by the first file.
+
+The optional named argument `ver` can be used to specify the version
+of the language to use. See `.versions` method.
+
+Returns a `Hash` with three keys: `stdout`, `stderr` which specify
+the output streams received from the program and `error` that
+seems to contain an error code, if the program doesn't successfully
+exit.
+
+If an incorrect language or version are specified, will `fail` with
+an HTTP 404 error.
+
+## `.stdout`
+
+```perl6
+    say $glot.stdout: 'perl6', 'say "Hello, World!"';
+```
+
+A shortcut for calling `.run` (takes same arguments) and returning
+just the `stdout` key. Will `fail` with the entire `Hash` returned
+from `.run` if the program errors out.
+
+## `.stderr`
+
+```perl6
+    say $glot.stderr: 'perl6', 'note "Hello, World!"';
+```
+
+A shortcut for calling `.run` (takes same arguments) and returning
+just the `stderr` key. Will `fail` with the entire `Hash` returned
+from `.run` if the program errors out.
+
 ----
 
 # REPOSITORY
