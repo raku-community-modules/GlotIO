@@ -42,27 +42,21 @@ subtest {
 }, '.run method';
 
 subtest {
-    my $ret = $glot.run: 'perl6', 'say "Hello, World!"';
-    is $ret.WHAT, Hash, 'returns a Hash';
-    is-deeply $ret, { error => '', stderr =>  '', stdout => "Hello, World!\n" },
-        'return value is correct';
+    my $ret = $glot.stdout: 'perl6', 'say "Hello, World!"';
+    is $ret, "Hello, World!\n", 'return value is correct';
 
-    $ret = $glot.run: 'perl6', [
+    $ret = $glot.stdout: 'perl6', [
         'main.p6' => 'use lib "."; use Foo; doit;',
         'Foo.pm6' => 'unit module Foo; sub doit is export { say "42" }',
     ];
-    is-deeply $ret, { error => '', stderr =>  '', stdout => "42\n" },
-        'return value is correct with multiple files';
+    is $ret, "42\n", 'return value is correct with multiple files';
 
-    $ret = $glot.run: 'python', 'print "Hello, World!"', :ver<2>;
-    is-deeply $ret, { error => '', stderr =>  '', stdout => "Hello, World!\n" },
+    $ret = $glot.stdout: 'python', 'print "Hello, World!"', :ver<2>;
+    is $ret, "Hello, World!\n",
         'return value is correct with explicit version';
 
-    $ret = $glot.run: 'python', 'print "Hello, World!"', :ver<latest>;
-    is $ret<error>, 'exit status 1', 'got error with failing code';
-    like $ret<stderr>, /'File' .+ 'line' .+ 'Hello, World'/,
-        'STDERR has the error message';
-    is $ret<stdout>, '', 'STDOUT is empty';
+    $ret = $glot.stdout: 'python', 'print "Hello, World!"', :ver<latest>;
+    is $ret.WHAT, Failure, 'got a Failure on failing code';
 }, '.stdout method';
 
 done-testing;
