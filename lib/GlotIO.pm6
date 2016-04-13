@@ -119,7 +119,7 @@ multi method create (
     Str   $title = 'Untitled',
     Bool :$mine  = False
 ) {
-    my %content = :$language, :$title, public => $mine;
+    my %content = :$language, :$title, public => !$mine;
     %content<files> = @files.map: {
         %(name => .key, content => .value )
     };
@@ -165,4 +165,3 @@ multi method update (
 method delete ( Str $id ) {
     self!request: 'DELETE', $!snip-api-url ~ '/snippets/' ~ uri-escape($id);
 }
-
