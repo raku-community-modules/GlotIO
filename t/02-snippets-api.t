@@ -9,12 +9,9 @@ subtest {
     my $res= $glot.list;
     ok $res.keys ⊆ <next content last>, 'return keys match expectations';
 
+    my $expected = <created files_hash id language modified owner public title url>;
     for |$res<content> {
-        my $expected = <created file_hash id language modified owner public title url>;
-        my $got = .keys;
-        say $expected.perl;
-        say $got.perl;
-        ok $got ⊆ $expected, 'item keys match expectations';
+        ok .keys ⊆ $expected, 'item keys match expectations';
     }
 }, '.list method';
 
