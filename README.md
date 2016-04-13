@@ -232,6 +232,65 @@ to fetch. Returns a hash with the snippet details:
     }
 ```
 
+## `.update`
+
+```perl6
+    say $glot.update: 'snippet-id', 'perl6', 'say "Hello, World!"';
+
+    # Or
+    say $glot.update: 'snippet-id', 'perl6', [
+            'main.p6' => 'use lib "."; use Foo; say "Hello, World!"',
+            'Foo.pm6' => 'unit module Foo;',
+        ], 'Module import example';
+
+    # Or
+    my $snippet = $glot.get: 'edmxttmtd5';
+    $snippet<title> = 'New title';
+    $glot.update: $snippet;
+```
+
+Updates an existing snippet. Requires the use of API key (see `.key` in
+constructor). As positional arguments, takes snippet ID to update,
+the language of the snippet, snippet code, and snippet title.
+The title is optional and will be set to `Untitled` by default.
+Snippet code can be provided as a single string of code or as an array
+of `Pair`s, where the key is the filename and the value is the code
+for the file.
+
+In addition, `.update` can also take a `Hash`. This form is useful
+when you already have a snippet `Hash` from `.create` or `.get`
+methods and simply wish to modify it. The required keys in the
+hash are `id`, `title`, `language`, and `files`, where the
+first three are strings and `files` is an array of Hashes, with
+each hash having keys `name` and `content` representing the
+filename of a file and its code.
+
+Returns a `Hash` with the updated snippet data:
+
+```perl6
+    {
+        created    => "2016-04-10T18:04:30Z".Str,
+        files      => [
+          {
+            content => "use lib \".\"; use Foo; say \"Hello, World!\"".Str,
+            name    => "main.p6".Str,
+          },
+          {
+            content => "unit module Foo;".Str,
+            name    => "Foo.pm6".Str,
+          },
+        ],
+        files_hash => "8042cf6813f1772e63c8afd0a556004ad9591ce2".Str,
+        id         => "edmxttmtd5".Str,
+        language   => "perl6".Str,
+        modified   => "2016-04-13T00:05:02Z".Str,
+        owner      => "c490baa3-1ecb-42f5-8742-216abbb97f8d".Str,
+        public     => Bool::False.Bool,
+        title      => "New title".Str,
+        url        => "https://snippets.glot.io/snippets/edmxttmtd5".Str,
+    }
+```
+
 ----
 
 # REPOSITORY

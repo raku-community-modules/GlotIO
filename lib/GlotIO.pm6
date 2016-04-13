@@ -20,13 +20,14 @@ method !request ($method, $url, $content?, Bool :$add-token) {
                 ('Authorization' => "Token $!key" if $add-token)
             );
     }
-    elsif ( $method eq 'POST' ) {
-        %res = $!ua.post: $url,
+    elsif ( $method eq 'POST' | 'PUT' ) {
+        %res = $!ua."$method.lc()"( $url,
             headers => {
                 'Content-type'  => 'application/json',
                 'Authorization' => "Token $!key",
             },
-            content => $content;
+            content => $content
+        );
     }
     else {
         fail "Unsupported request method `$method`";
@@ -123,12 +124,19 @@ method get ( Str:D $id ) {
     self!request: 'GET', $!snip-api-url ~ '/snippets/' ~ uri-escape($id);
 }
 
+multi method update ( %snippet ) {
+    my @files = %snippet<files>.map: { .<name> => .<content> };
+    self.update: %snippet<id>,
+                 %snippet<language>,
+                 @files,
+                 %snippet<title>;
+}
+
 multi method update (
     Str   $id,
     Str   $lang,
     Str   $code,
     Str   $title = 'Untitled',
-    Bool :$mine  = False
 ) {
     self.update: $id, $lang, [ main => $code, ], $title;
 }
@@ -136,26 +144,13 @@ multi method update (
 multi method update (
     Str   $id,
     Str   $language,
-         :@files,
-    Str  :$title = 'Untitled',
-    Bool :$mine  = False
+          @files,
+    Str   $title = 'Untitled'
 ) {
     my %content = :$language, :$title, public => $mine;
     %content<files> = @files.map: {
         %(name => .key, content => .value )
     };
-    self!request: 'POST', $!snip-api-url ~ '/snippets', to-json(%content),
-        add-token => $mine;
-}
-
-{
-  "language": "python",
-  "title": "test - updated",
-  "public": false,
-  "files": [
-    {
-      "name": "main.py",
-      "content": "print(42)"
-    }
-  ]
+    self!request: 'PUT', $!snip-api-url ~ '/snippets/' ~ uri-escape($id),
+        to-json(%content);
 }
