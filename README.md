@@ -13,6 +13,28 @@ my GlotIO $glot .= new: :key<89xxxx9f-a3ec-4445-9f14-6xxxe6ff3846>;
 say $glot.languages;
 ```
 
+# TABLE OF CONTENTS
+- [NAME](#name)
+- [SYNOPSIS](#synopsis)
+- [DESCRIPTION](#description)
+- [KEY](#key)
+- [METHODS](#methods)
+    - [`.new`](#new)
+    - [`.languages`](#languages)
+    - [`.versions`](#versions)
+    - [`.run`](#run)
+    - [`.stdout`](#stdout)
+    - [`.stderr`](#stderr)
+    - [`.list`](#list)
+    - [`.create`](#create)
+    - [`.get`](#get)
+    - [`.update`](#update)
+    - [`.delete`](#delete)
+- [REPOSITORY](#repository)
+- [BUGS](#bugs)
+- [AUTHOR](#author)
+- [LICENSE](#license)
+
 # DESCRIPTION
 
 This module lets you use API provided [glot.io](http://glot.io) which is
