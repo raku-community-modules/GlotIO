@@ -291,6 +291,18 @@ Returns a `Hash` with the updated snippet data:
     }
 ```
 
+## `.delete`
+
+```perl6
+    $glot.delete: 'snippet-id';
+```
+
+Deletes a snippet. Requires the use of API key (see `.key` in
+constructor). Takes one positional argument: the ID of the
+snippet to delete. On success, returns `True`. Attempting
+to delete a non-existant snippet will `fail` with an
+HTTP 404 error.
+
 ----
 
 # REPOSITORY

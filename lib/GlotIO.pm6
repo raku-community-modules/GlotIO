@@ -29,6 +29,13 @@ method !request ($method, $url, $content?, Bool :$add-token) {
             content => $content
         );
     }
+    elsif ( $method eq 'DELETE' ) {
+        %res = $!ua.delete: $url,
+            headers => {
+                'Authorization' => "Token $!key",
+            };
+        return True if %res<status> == 204;
+    }
     else {
         fail "Unsupported request method `$method`";
     }
@@ -147,10 +154,15 @@ multi method update (
           @files,
     Str   $title = 'Untitled'
 ) {
-    my %content = :$language, :$title, public => $mine;
+    my %content = :$language, :$title, public => False;
     %content<files> = @files.map: {
         %(name => .key, content => .value )
     };
     self!request: 'PUT', $!snip-api-url ~ '/snippets/' ~ uri-escape($id),
         to-json(%content);
 }
+
+method delete ( Str $id ) {
+    self!request: 'DELETE', $!snip-api-url ~ '/snippets/' ~ uri-escape($id);
+}
+
