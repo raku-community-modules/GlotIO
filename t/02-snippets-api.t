@@ -1,13 +1,22 @@
+use lib 'lib';
 
-use Data::Dump;
+use Test;
+use GlotIO;
 
-my $s = $glot.create: 'perl6', [ 'main.p6' => 'use lib "."; use Foo; say "Hello, World!"', 'Foo.pm6' => 'unit module Foo;', ], 'Module import example', :mine;
+my GlotIO $glot .= new: key => 't/key'.IO.lines[0];
 
-say Dump $s;
+subtest {
+    my $res= $glot.list;
+    ok $res.keys ⊆ <next content last>, 'return keys match expectations';
 
-say $glot.delete: $s<id>;
+    for |$res<content> {
+        my $expected = <created file_hash id language modified owner public title url>;
+        my $got = .keys;
+        say $expected.perl;
+        say $got.perl;
+        ok $got ⊆ $expected, 'item keys match expectations';
+    }
+}, '.list method';
 
-#my $snippet = $glot.get: 'edmxttmtd5';
-#say $snippet<title>;
-#$snippet<title> = 'New title';
-#say Dump $glot.update: $snippet;
+
+done-testing;
