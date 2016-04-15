@@ -142,7 +142,7 @@ subtest {
     my $res = $glot.get: $id;
 
     is-deeply $updated-res, $res, 'return from .update matches .get';
-    
+
     like $res<created>,  /^ \d**4 '-' \d\d '-' \d\d 'T' \d\d\:\d\d\:\d\d 'Z' $/,
         '`created` date looks sane';
     like $res<modified>, /^ \d**4 '-' \d\d '-' \d\d 'T' \d\d\:\d\d\:\d\d 'Z' $/,
@@ -172,5 +172,17 @@ subtest {
     # clean up
     $glot.delete: $id;
 }, '.update method';
+
+subtest {
+    my $res = $glot.create: 'perl6', 'say "Hello, World!"';
+    is $res.WHAT, Hash, 'returns a Hash';
+    diag "Created paste ID $res<id>";
+
+    is-deeply $res, $glot.get($res<id>), '.get fetches the snippet fine';
+    isa-ok $glot.delete($res<id>), True,
+        'successful .delete returns True';
+        
+    throws-like { $glot.delete: $res<id> }, Exception, 'delete on non-existent snippet throws', message => /404/;
+}, '.delete method works';
 
 done-testing;
