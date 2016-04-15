@@ -136,7 +136,8 @@ multi method update ( %snippet ) {
     self.update: %snippet<id>,
                  %snippet<language>,
                  @files,
-                 %snippet<title>;
+                 %snippet<title>,
+                 public => %snippet<public>;
 }
 
 multi method update (
@@ -144,6 +145,7 @@ multi method update (
     Str   $lang,
     Str   $code,
     Str   $title = 'Untitled',
+    Bool :$public = False,
 ) {
     self.update: $id, $lang, [ main => $code, ], $title;
 }
@@ -152,9 +154,10 @@ multi method update (
     Str   $id,
     Str   $language,
           @files,
-    Str   $title = 'Untitled'
+    Str   $title = 'Untitled',
+    Bool :$public = False,
 ) {
-    my %content = :$language, :$title, public => False;
+    my %content = :$language, :$title, public => $public;
     %content<files> = @files.map: {
         %(name => .key, content => .value )
     };
