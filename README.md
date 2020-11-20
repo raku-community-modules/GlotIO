@@ -2,11 +2,11 @@
 
 # NAME
 
-GlotIO - use glot.io API via Perl 6
+GlotIO - use glot.io API via Raku
 
 # SYNOPSIS
 
-```perl6
+```raku
 use GlotIO;
 my GlotIO $glot .= new: :key<89xxxx9f-a3ec-4445-9f14-6xxxe6ff3846>;
 
@@ -49,7 +49,7 @@ API key](https://glot.io/api)
 
 ## `.new`
 
-```perl6
+```raku
 my GlotIO $glot .= new: :key<89xxxx9f-a3ec-4445-9f14-6xxxe6ff3846>;
 ```
 
@@ -59,7 +59,7 @@ Methods that require the key are marked as such.
 
 ## `.languages`
 
-```perl6
+```raku
 say "Glot.io supports $_" for $glot.languages;
 ```
 
@@ -67,9 +67,9 @@ Returns a list of languages supported by GlotIO.
 
 ## `.versions`
 
-```perl6
-say "Glot.io supports $_ version of Perl 6"
-    for $glot.versions: 'perl6';
+```raku
+say "Glot.io supports $_ version of Raku"
+    for $glot.versions: 'raku';
 ```
 
 Returns a list of supported versions for a language that
@@ -79,12 +79,12 @@ invalid language will `fail` an an HTTP 404 error.
 
 ## `.run`
 
-```perl6
-    say $glot.run: 'perl6', 'say "Hello, World!"';
+```raku
+    say $glot.run: 'raku', 'say "Hello, World!"';
 
-    say $glot.run: 'perl6', [
-        'main.p6' => 'use lib "."; use Foo; doit;',
-        'Foo.pm6' => 'unit module Foo; sub doit is export { say "42" }',
+    say $glot.run: 'raku', [
+        'main.raku'   => 'use lib "."; use Foo; doit;',
+        'Foo.rakumod' => 'unit module Foo; sub doit is export { say "42" }',
     ];
 
     say $glot.run: 'python', 'print "Hello, World!"', :ver<2>;
@@ -111,8 +111,8 @@ an HTTP 404 error.
 
 ## `.stdout`
 
-```perl6
-    say $glot.stdout: 'perl6', 'say "Hello, World!"';
+```raku
+    say $glot.stdout: 'raku', 'say "Hello, World!"';
 ```
 
 A shortcut for calling `.run` (takes same arguments) and returning
@@ -121,8 +121,8 @@ from `.run` if the program errors out.
 
 ## `.stderr`
 
-```perl6
-    say $glot.stderr: 'perl6', 'note "Hello, World!"';
+```raku
+    say $glot.stderr: 'raku', 'note "Hello, World!"';
 ```
 
 A shortcut for calling `.run` (takes same arguments) and returning
@@ -131,7 +131,7 @@ from `.run` if the program errors out.
 
 ## `.list`
 
-```perl6
+```raku
 say $glot.list<content>[0..3];
 
 say $glot.list: :3page, :50per-page, :mine;
@@ -149,7 +149,7 @@ if set to `True`.
 
 Returns a `Hash` in the following format:
 
-```perl6
+```raku
     {
         first   => 1,
         last    => 20,
@@ -181,7 +181,7 @@ error.
 
 ## `.create`
 
-```perl6
+```raku
     say $glot.create: 'perl6', 'say "Hello, World!"';
 
     say $glot.create: 'perl6', [
@@ -201,7 +201,7 @@ to succeed.
 
 Returns a hash with metadata for the newly created snippet:
 
-```perl6
+```raku
     {
       created    => "2016-04-10T17:42:20Z".Str,
       files      => [
@@ -223,29 +223,29 @@ Returns a hash with metadata for the newly created snippet:
 
 ## `.get`
 
-```perl6
+```raku
     say $glot.get: 'edmxttmtd5';
 ```
 
 Fetches a snippet. Takes one mandatory argument: the ID of the snippet
 to fetch. Returns a hash with the snippet details:
 
-```perl6
+```raku
     {
       created    => "2016-04-10T18:04:30Z".Str,
       files      => [
         {
           content => "use lib \".\"; use Foo; say \"Hello, World!\"".Str,
-          name    => "main.p6".Str,
+          name    => "main.raku".Str,
         },
         {
           content => "unit module Foo;".Str,
-          name    => "Foo.pm6".Str,
+          name    => "Foo.rakumod".Str,
         },
       ],
       files_hash => "8042cf6813f1772e63c8afd0a556004ad9591ce2".Str,
       id         => "edmxttmtd5".Str,
-      language   => "perl6".Str,
+      language   => "raku".Str,
       modified   => "2016-04-10T18:04:30Z".Str,
       owner      => "c490baa3-1ecb-42f5-8742-216abbb97f8d".Str,
       public     => Bool::True.Bool,
@@ -256,7 +256,7 @@ to fetch. Returns a hash with the snippet details:
 
 ## `.update`
 
-```perl6
+```raku
     say $glot.update: 'snippet-id', 'perl6', 'say "Hello, World!"';
 
     # Or
@@ -289,7 +289,7 @@ filename of a file and its code.
 
 Returns a `Hash` with the updated snippet data:
 
-```perl6
+```raku
     {
         created    => "2016-04-10T18:04:30Z".Str,
         files      => [
@@ -315,7 +315,7 @@ Returns a `Hash` with the updated snippet data:
 
 ## `.delete`
 
-```perl6
+```raku
     $glot.delete: 'snippet-id';
 ```
 
@@ -330,12 +330,12 @@ HTTP 404 error.
 # REPOSITORY
 
 Fork this module on GitHub:
-https://github.com/zoffixznet/perl6-GlotIO
+https://github.com/raku-community-modules/GlotIO
 
 # BUGS
 
 To report bugs or request features, please use
-https://github.com/zoffixznet/perl6-GlotIO/issues
+https://github.com/raku-community-modules/GlotIO/issues
 
 # AUTHOR
 
