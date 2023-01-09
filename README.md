@@ -75,7 +75,7 @@ say "Glot.io supports $_ version of Raku"
 Returns a list of supported versions for a language that
 must be supplied as the mandatory positional argument. List of valid
 language names can be obtained via `.languages` method. Using an
-invalid language will `fail` an an HTTP 404 error.
+invalid language will `fail` as an HTTP 404 error.
 
 ## `.run`
 
