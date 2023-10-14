@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/zoffixznet/perl6-GlotIO.svg)](https://travis-ci.org/zoffixznet/perl6-GlotIO)
+[![Actions Status](https://github.com/raku-community-modules/GlotIO/workflows/test/badge.svg)](https://github.com/raku-community-modules/GlotIO/actions)
 
 # NAME
 
