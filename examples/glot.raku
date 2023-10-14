@@ -5,7 +5,7 @@ my GlotIO $glot .= new: key => 't/key'.IO.lines[0];
 
 use Data::Dump;
 
-my $s = $glot.create: 'perl6', [ 'main.p6' => 'use lib "."; use Foo; say "Hello, World!"', 'Foo.pm6' => 'unit module Foo;', ], 'Module import example', :mine;
+my $s = $glot.create: 'raku', [ 'main.raku' => 'use lib "."; use Foo; say "Hello, World!"', 'Foo.rakumod' => 'unit module Foo;', ], 'Module import example', :mine;
 
 say Dump $s;
 
