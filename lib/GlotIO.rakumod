@@ -1,4 +1,4 @@
-unit class GlotIO:ver<1.001001>;
+unit class GlotIO;
 
 use HTTP::Tinyish;
 use JSON::Fast;
@@ -61,7 +61,7 @@ method languages {
 
 method versions (Str $lang) {
     my $uri = $!run-api-url ~ '/languages/' ~ uri-escape($lang);
-    self!request('GET', $uri).map: *<version>;
+    self!request('GET', $uri)<version>.list;
 }
 
 multi method run (Str $lang, @files, :$ver = 'latest') {
