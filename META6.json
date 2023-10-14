@@ -1,18 +1,28 @@
 {
-    "perl"         : "6.c",
-    "name"         : "GlotIO",
-    "license"      : "Artistic-2.0",
-    "version"      : "1.001001",
-    "description"  : "Use glot.io API: pastebin allowing execution of code",
-    "depends"      : [
-        "HTTP::Tinyish",
-        "JSON::Fast",
-        "URI::Escape"
-    ],
-    "test-depends" : [ "Test" ],
-    "provides"     : {
-        "GlotIO" : "lib/GlotIO.pm6"
-    },
-    "authors"      : [ "Zoffix Znet" ],
-    "source-url"   : "git://github.com/raku-community-modules/GlotIO.git"
+  "authors": [
+    "Zoffix Znet"
+  ],
+  "build-depends": [
+  ],
+  "depends": [
+    "HTTP::Tinyish",
+    "JSON::Fast",
+    "URI::Escape"
+  ],
+  "description": "Use glot.io API: pastebin allowing execution of code",
+  "license": "Artistic-2.0",
+  "name": "GlotIO",
+  "provides": {
+    "GlotIO": "lib/GlotIO.rakumod"
+  },
+  "raku": "6.c",
+  "resources": [
+  ],
+  "source-url": "https://github.com/raku-community-modules/GlotIO.git",
+  "tags": [
+  ],
+  "test-depends": [
+    "Test"
+  ],
+  "version": "1.001001"
 }
