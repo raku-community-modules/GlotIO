@@ -1,3 +1,4 @@
+use v6.c;
 unit class GlotIO;
 
 use HTTP::Tinyish;

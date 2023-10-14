@@ -1,4 +1,4 @@
-use lib 'lib';
+use v6.c;
 
 use GlotIO;
 my GlotIO $glot .= new: key => 't/key'.IO.lines[0];

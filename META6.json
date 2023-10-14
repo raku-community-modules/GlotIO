@@ -1,4 +1,5 @@
 {
+  "auth": "zef:raku-community-modules",
   "authors": [
     "Zoffix Znet"
   ],
@@ -24,5 +25,5 @@
   "test-depends": [
     "Test"
   ],
-  "version": "1.001001"
+  "version": "2.0.0"
 }
